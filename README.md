@@ -89,15 +89,15 @@ The Message Passing Interface (MPI) model targets distributed-memory systems whe
 3. **Data Gather (`MPI_Gather`):** Each rank computes its assigned partial rows of matrix $C$, which are gathered back to Rank 0 to reconstruct the complete $4000 \times 4000$ output.
 
 ### Experimental Execution
-* **Working Directory:** `~/parallel_lab/mpi`[cite: 1]
-* **Allocated Processes / Nodes:** 4 MPI Processes (`master`, `worker1`, `worker2`, `worker3`)[cite: 1]
-  * **Rank 0 (master):** Computing 1000 rows[cite: 1]
-  * **Rank 1 (worker1):** Computing 1000 rows[cite: 1]
-  * **Rank 2 (worker2):** Computing 1000 rows[cite: 1]
-  * **Rank 3 (worker3):** Computing 1000 rows[cite: 1]
+* **Working Directory:** `~/parallel_lab/mpi`
+* **Allocated Processes / Nodes:** 4 MPI Processes (`master`, `worker1`, `worker2`, `worker3`)
+  * **Rank 0 (master):** Computing 1000 rows
+  * **Rank 1 (worker1):** Computing 1000 rows
+  * **Rank 2 (worker2):** Computing 1000 rows
+  * **Rank 3 (worker3):** Computing 1000 rows
 * **Compilation Flags:** `mpicc -O2`
-* **Recorded Execution Time:** `107.656372 seconds`[cite: 1]
-* **Verification Check:** `C[0][0] = 4000.00`[cite: 1]
+* **Recorded Execution Time:** `107.656372 seconds
+* **Verification Check:** `C[0][0] = 4000.00
 
 ### Execution Screenshot
 ![MPI Matrix Multiplication Result](./screenshots/04-partC-MPI-results.jpg)[cite: 1]
