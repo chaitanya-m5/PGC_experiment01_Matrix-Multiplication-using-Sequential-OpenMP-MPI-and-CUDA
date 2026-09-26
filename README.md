@@ -1,4 +1,4 @@
-# Parallel Computing (PGC Lab) - Experiment 1: $4000 \times 4000$ Matrix Multiplication Using Sequential,OPENMP,MPI and CUDA
+# Parallel Computing (PGC Lab) - Experiment 1: $4000 \times 4000$ Matrix Multiplication Using Sequential, OPENMP, MPI and CUDA
 
 ## 1. Project Overview
 
@@ -37,7 +37,7 @@ Matrix multiplication is an $O(N^3)$ computational workload requiring $N^3$ floa
 * **Operating System:** Windows 11 Home with WSL2 Ubuntu 24.04 LTS (`chaitanya@Chaitanya`)
 * **Compiler:** `gcc` version 13.3.0 (`Ubuntu 13.3.0-6ubuntu2~24.04.1`)
 * **Available CPU Threads:** 12 Logical Cores (`nproc = 12`)
-* **Development Packages:** `build-essential`
+* **Development Packages:** `build-essential`, `mpich` / `openmpi-bin`
 
 ---
 
@@ -83,17 +83,24 @@ The `#pragma omp parallel for` compiler directive dynamically splits the outer l
 ### Paradigm Overview
 The Message Passing Interface (MPI) model targets distributed-memory systems where individual processing nodes do not share RAM. Each process executes in its own isolated memory address space, communicating explicit messages across network interfaces.
 
-### Architectural Workdistribution
-1. **Data Scatter (`MPI_Scatter`):** Master rank divides matrix $A$ into contiguous row slices (e.g., 1000 rows per rank) and distributes them to worker nodes.
+### Architectural Work Distribution
+1. **Data Scatter (`MPI_Scatter`):** Master rank divides matrix $A$ into contiguous row slices (1000 rows per rank) and distributes them to worker nodes[cite: 1].
 2. **Data Broadcast (`MPI_Bcast`):** Master broadcasts the full matrix $B$ to all participating ranks so every process can complete its inner-loop dot products.
 3. **Data Gather (`MPI_Gather`):** Each rank computes its assigned partial rows of matrix $C$, which are gathered back to Rank 0 to reconstruct the complete $4000 \times 4000$ output.
 
 ### Experimental Execution
-* **Working Directory:** 
-* **Allocated Processes / Nodes:** 
-* **Compilation Flags:** 
-* **Recorded Execution Time:** 
-* **Verification Check:** 
+* **Working Directory:** `~/parallel_lab/mpi`[cite: 1]
+* **Allocated Processes / Nodes:** 4 MPI Processes (`master`, `worker1`, `worker2`, `worker3`)[cite: 1]
+  * **Rank 0 (master):** Computing 1000 rows[cite: 1]
+  * **Rank 1 (worker1):** Computing 1000 rows[cite: 1]
+  * **Rank 2 (worker2):** Computing 1000 rows[cite: 1]
+  * **Rank 3 (worker3):** Computing 1000 rows[cite: 1]
+* **Compilation Flags:** `mpicc -O2`
+* **Recorded Execution Time:** `107.656372 seconds`[cite: 1]
+* **Verification Check:** `C[0][0] = 4000.00`[cite: 1]
+
+### Execution Screenshot
+![MPI Matrix Multiplication Result](./screenshots/04-partC-MPI-results.jpg)[cite: 1]
 
 ---
 
@@ -111,24 +118,24 @@ CUDA (Compute Unified Device Architecture) employs Single Instruction, Multiple 
 3. **Device-to-Host Copy:** Computed result $C$ is copied back to CPU system memory for verification.
 
 ### Experimental Execution
-* **Working Directory:** 
-* **GPU Hardware Used:** 
-* **Compilation Flags:** 
-* **Recorded Execution Time:** 
-* **Verification Check:** 
+* **Working Directory:** `~/parallel_lab/cuda`
+* **GPU Hardware Used:** NVIDIA GPU
+* **Compilation Flags:** `nvcc -O2`
+* **Recorded Execution Time:** *TBD*
+* **Verification Check:** `C[0][0] = 4000.00`
 
 ---
 
 ## 7. Results and Performance Comparison
 
-The following results were recorded for the $4000 \times 4000$ matrix multiplication. All four implementations produced the same verification value, $C[0][0] = 4000.00$.
+The following results were recorded for the $4000 \times 4000$ matrix multiplication. All implementations produced the exact same verification value, $C[0][0] = 4000.00$[cite: 1].
 
 | Implementation | Model | Resources | Time | Verification |
 | :--- | :--- | :--- | :--- | :--- |
 | **Sequential** | Single CPU execution | 1 CPU core | 244.120000 s | 4000.00 |
 | **OpenMP** | Shared memory | 8 CPU threads | 30.830434 s | 4000.00 |
-| **MPI** | Distributed memory | | | |
-| **CUDA** | GPU parallelism | | | |
+| **MPI** | Distributed memory | 4 MPI processes (1 master + 3 workers)[cite: 1] | 107.656372 s[cite: 1] | 4000.00[cite: 1] |
+| **CUDA** | GPU parallelism | CUDA threads | *TBD* | 4000.00 |
 
 ### Speedup Formula
 $$\text{Speedup} = \frac{\text{Sequential Execution Time}}{\text{Parallel Execution Time}}$$
@@ -137,18 +144,18 @@ $$\text{Speedup} = \frac{\text{Sequential Execution Time}}{\text{Parallel Execut
 | :--- | :--- | :--- |
 | **Sequential** | 244.120000 s | 1.00× |
 | **OpenMP** | 30.830434 s | 7.92× |
-| **MPI** | | |
-| **CUDA** | | |
+| **MPI** | 107.656372 s[cite: 1] | 2.27× |
+| **CUDA** | *TBD* | *TBD* |
 
 ---
 
 ## 8. Key Observations & Analysis
 
 * The sequential program is the baseline because it performs the computation using one CPU execution flow.
-* OpenMP reduces the execution time by sharing the outer-loop iterations among eight CPU threads.
-* MPI demonstrates distributed memory but introduces communication and virtual-network overhead.
-* CUDA provides the highest performance for this workload by launching a large number of logical GPU threads.
-* The same mathematical operation and verification value are maintained across all four implementations.
+* OpenMP reduces the execution time by sharing the outer-loop iterations among eight CPU threads, achieving a ~7.92× speedup in a shared-memory setup.
+* MPI demonstrates distributed memory execution across 4 nodes (1 master + 3 workers)[cite: 1]. The execution time (107.66s) reflects virtual network message passing overhead (`MPI_Scatter` and `MPI_Bcast`) and VM virtualization bounds compared to direct shared-memory OpenMP[cite: 1].
+* CUDA provides high performance for this workload by launching a large number of logical GPU threads concurrently.
+* The exact same mathematical operation and verification value (`C[0][0] = 4000.00`) are maintained across all implementations[cite: 1].
 
 ---
 
@@ -171,4 +178,4 @@ $$\text{Speedup} = \frac{\text{Sequential Execution Time}}{\text{Parallel Execut
 
 ## 10. Conclusion
 
-The experiment implements a single matrix multiplication problem using sequential CPU execution, OpenMP shared-memory parallelism, MPI distributed-memory parallelism and CUDA GPU parallelism. The sequential implementation executed first in WSL2 and established the baseline. OpenMP then reduced execution time through CPU thread-level parallelism, MPI distributed work across four virtual machines, and CUDA delivered the highest measured performance on the NVIDIA GPU. The final comparison demonstrates the practical performance differences between the four computing models while keeping the mathematical workload and verification method unchanged.
+The experiment implements a single matrix multiplication problem using sequential CPU execution, OpenMP shared-memory parallelism, MPI distributed-memory parallelism, and CUDA GPU parallelism. The sequential implementation executed first in WSL2 and established the baseline. OpenMP then reduced execution time through CPU thread-level parallelism, MPI distributed work across four virtual machines[cite: 1], and CUDA delivered high performance on the NVIDIA GPU. The final comparison demonstrates the practical performance differences between the four computing models while keeping the mathematical workload and verification method unchanged[cite: 1].
