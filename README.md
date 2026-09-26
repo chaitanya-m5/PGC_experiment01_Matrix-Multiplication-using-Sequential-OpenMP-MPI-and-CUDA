@@ -100,7 +100,7 @@ The Message Passing Interface (MPI) model targets distributed-memory systems whe
 * **Verification Check:** `C[0][0] = 4000.00
 
 ### Execution Screenshot
-![MPI Matrix Multiplication Result](./screenshots/MPI/04-partC-MPI-results.jpg)[cite: 1]
+![MPI Matrix Multiplication Result](./screenshots/MPI/04-partC-MPI-results.png)
 
 ---
 
