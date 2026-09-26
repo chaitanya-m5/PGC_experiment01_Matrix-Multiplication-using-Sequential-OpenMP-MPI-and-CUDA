@@ -55,7 +55,7 @@ Because no parallelization is active, execution speed is bound by single-thread 
 * **Verification Check:** `C[0][0] = 4000.00`
 
 ### Execution Screenshot
-![Sequential Matrix Multiplication Result](.screenshots/sequential/partA-sequential-result.png)
+![Sequential Matrix Multiplication Result](./screenshots/sequential/partA-sequential-result.png)
 
 ---
 
