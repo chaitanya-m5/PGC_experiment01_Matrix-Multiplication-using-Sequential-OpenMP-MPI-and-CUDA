@@ -35,9 +35,9 @@ Matrix multiplication is an $O(N^3)$ computational workload requiring $N^3$ floa
 ## 2. System & Environment Specifications
 
 * **Operating System:** Windows 11 Home with WSL2 Ubuntu 24.04 LTS (`chaitanya@Chaitanya`)
-* **Compiler:** `gcc` version 13.3.0 (`Ubuntu 13.3.0-6ubuntu2~24.04.1`)
+* **Compiler:** `gcc` version 13.3.0 (`Ubuntu 13.3.0-6ubuntu2~24.04.1`) / `nvcc` (CUDA Toolkit)
 * **Available CPU Threads:** 12 Logical Cores (`nproc = 12`)
-* **Development Packages:** `build-essential`, `mpich` / `openmpi-bin`
+* **Development Packages:** `build-essential`, `mpich` / `openmpi-bin`, `nvidia-cuda-toolkit`
 
 ---
 
@@ -84,7 +84,7 @@ The `#pragma omp parallel for` compiler directive dynamically splits the outer l
 The Message Passing Interface (MPI) model targets distributed-memory systems where individual processing nodes do not share RAM. Each process executes in its own isolated memory address space, communicating explicit messages across network interfaces.
 
 ### Architectural Work Distribution
-1. **Data Scatter (`MPI_Scatter`):** Master rank divides matrix $A$ into contiguous row slices (1000 rows per rank) and distributes them to worker nodes[cite: 1].
+1. **Data Scatter (`MPI_Scatter`):** Master rank divides matrix $A$ into contiguous row slices (1000 rows per rank) and distributes them to worker nodes.
 2. **Data Broadcast (`MPI_Bcast`):** Master broadcasts the full matrix $B$ to all participating ranks so every process can complete its inner-loop dot products.
 3. **Data Gather (`MPI_Gather`):** Each rank computes its assigned partial rows of matrix $C$, which are gathered back to Rank 0 to reconstruct the complete $4000 \times 4000$ output.
 
@@ -96,8 +96,8 @@ The Message Passing Interface (MPI) model targets distributed-memory systems whe
   * **Rank 2 (worker2):** Computing 1000 rows
   * **Rank 3 (worker3):** Computing 1000 rows
 * **Compilation Flags:** `mpicc -O2`
-* **Recorded Execution Time:** `107.656372 seconds
-* **Verification Check:** `C[0][0] = 4000.00
+* **Recorded Execution Time:** `107.656372 seconds`
+* **Verification Check:** `C[0][0] = 4000.00`
 
 ### Execution Screenshot
 ![MPI Matrix Multiplication Result](./screenshots/MPI/04-partC-MPI-results.png)
@@ -121,8 +121,11 @@ CUDA (Compute Unified Device Architecture) employs Single Instruction, Multiple 
 * **Working Directory:** `~/parallel_lab/cuda`
 * **GPU Hardware Used:** NVIDIA GPU
 * **Compilation Flags:** `nvcc -O2`
-* **Recorded Execution Time:** *TBD*
+* **Recorded Execution Time:** `0.185210 seconds` (185.21 ms total compute kernel execution)
 * **Verification Check:** `C[0][0] = 4000.00`
+
+### Execution Screenshot
+![CUDA Matrix Multiplication Result](./screenshots/cuda/partD-cuda-result.png)
 
 ---
 
@@ -135,7 +138,7 @@ The following results were recorded for the $4000 \times 4000$ matrix multiplica
 | **Sequential** | Single CPU execution | 1 CPU core | 244.120000 s | 4000.00 |
 | **OpenMP** | Shared memory | 8 CPU threads | 30.830434 s | 4000.00 |
 | **MPI** | Distributed memory | 4 MPI processes (1 master + 3 workers) | 107.656372 s | 4000.00 |
-| **CUDA** | GPU parallelism | CUDA threads | *TBD* | 4000.00 |
+| **CUDA** | GPU parallelism | Massively parallel CUDA threads | 0.185210 s | 4000.00 |
 
 ### Speedup Formula
 $$\text{Speedup} = \frac{\text{Sequential Execution Time}}{\text{Parallel Execution Time}}$$
@@ -145,7 +148,7 @@ $$\text{Speedup} = \frac{\text{Sequential Execution Time}}{\text{Parallel Execut
 | **Sequential** | 244.120000 s | 1.00× |
 | **OpenMP** | 30.830434 s | 7.92× |
 | **MPI** | 107.656372 s | 2.27× |
-| **CUDA** | *TBD* | *TBD* |
+| **CUDA** | 0.185210 s | 1318.07× |
 
 ---
 
@@ -154,7 +157,7 @@ $$\text{Speedup} = \frac{\text{Sequential Execution Time}}{\text{Parallel Execut
 * The sequential program is the baseline because it performs the computation using one CPU execution flow.
 * OpenMP reduces the execution time by sharing the outer-loop iterations among eight CPU threads, achieving a ~7.92× speedup in a shared-memory setup.
 * MPI demonstrates distributed memory execution across 4 nodes (1 master + 3 workers). The execution time (107.66s) reflects virtual network message passing overhead (`MPI_Scatter` and `MPI_Bcast`) and VM virtualization bounds compared to direct shared-memory OpenMP.
-* CUDA provides high performance for this workload by launching a large number of logical GPU threads concurrently.
+* CUDA provides massive acceleration for this highly parallel workload, reducing computation time down to sub-second levels (~0.185 seconds) and achieving over 1300× speedup by offloading thousands of dot-product operations to GPU hardware cores.
 * The exact same mathematical operation and verification value (`C[0][0] = 4000.00`) are maintained across all implementations.
 
 ---
