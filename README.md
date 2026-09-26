@@ -144,7 +144,7 @@ $$\text{Speedup} = \frac{\text{Sequential Execution Time}}{\text{Parallel Execut
 | :--- | :--- | :--- |
 | **Sequential** | 244.120000 s | 1.00× |
 | **OpenMP** | 30.830434 s | 7.92× |
-| **MPI** | 107.656372 s[cite: 1] | 2.27× |
+| **MPI** | 107.656372 s | 2.27× |
 | **CUDA** | *TBD* | *TBD* |
 
 ---
