@@ -55,7 +55,7 @@ Because no parallelization is active, execution speed is bound by single-thread 
 * **Verification Check:** `C[0][0] = 4000.00`
 
 ### Execution Screenshot
-![Sequential Matrix Multiplication Result](./screenshots/partA-sequential-result.png)
+![Sequential Matrix Multiplication Result](.screenshots/sequential/partA-sequential-result.png)
 
 ---
 
@@ -74,7 +74,7 @@ The `#pragma omp parallel for` compiler directive dynamically splits the outer l
 * **Verification Check:** `C[0][0] = 4000.00`
 
 ### Execution Screenshot
-![OpenMP Matrix Multiplication Result](./screenshots/04-partB-openmp-results.png)
+![OpenMP Matrix Multiplication Result](./screenshots/OpenMP/04-partB-openmp-results.png)
 
 ---
 
@@ -100,7 +100,7 @@ The Message Passing Interface (MPI) model targets distributed-memory systems whe
 * **Verification Check:** `C[0][0] = 4000.00
 
 ### Execution Screenshot
-![MPI Matrix Multiplication Result](./screenshots/04-partC-MPI-results.jpg)[cite: 1]
+![MPI Matrix Multiplication Result](./screenshots/MPI/04-partC-MPI-results.jpg)[cite: 1]
 
 ---
 
