@@ -53,7 +53,7 @@ Because no parallelization is active, execution speed is bound by single-thread 
 * **Verification Check:** `C[0][0] = 4000.00`
 
 ### Execution Screenshot
-![Sequential Matrix Multiplication Result](./partA-sequential-result.png)
+![Sequential Matrix Multiplication Result](./screenshots/partA-sequential-result.png)
 
 ---
 
@@ -72,7 +72,7 @@ The `#pragma omp parallel for` compiler directive dynamically splits the outer l
 * **Verification Check:** `C[0][0] = 4000.00`
 
 ### Execution Screenshot
-![OpenMP Matrix Multiplication Result](./04-partB-openmp-results.png)
+![OpenMP Matrix Multiplication Result](./screenshots/04-partB-openmp-results.png)
 
 ---
 
