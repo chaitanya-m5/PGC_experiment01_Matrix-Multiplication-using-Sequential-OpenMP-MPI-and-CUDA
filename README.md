@@ -128,13 +128,13 @@ CUDA (Compute Unified Device Architecture) employs Single Instruction, Multiple 
 
 ## 7. Results and Performance Comparison
 
-The following results were recorded for the $4000 \times 4000$ matrix multiplication. All implementations produced the exact same verification value, $C[0][0] = 4000.00$[cite: 1].
+The following results were recorded for the $4000 \times 4000$ matrix multiplication. All implementations produced the exact same verification value, $C[0][0] = 4000.00$.
 
 | Implementation | Model | Resources | Time | Verification |
 | :--- | :--- | :--- | :--- | :--- |
 | **Sequential** | Single CPU execution | 1 CPU core | 244.120000 s | 4000.00 |
 | **OpenMP** | Shared memory | 8 CPU threads | 30.830434 s | 4000.00 |
-| **MPI** | Distributed memory | 4 MPI processes (1 master + 3 workers)[cite: 1] | 107.656372 s[cite: 1] | 4000.00[cite: 1] |
+| **MPI** | Distributed memory | 4 MPI processes (1 master + 3 workers) | 107.656372 s | 4000.00 |
 | **CUDA** | GPU parallelism | CUDA threads | *TBD* | 4000.00 |
 
 ### Speedup Formula
@@ -153,9 +153,9 @@ $$\text{Speedup} = \frac{\text{Sequential Execution Time}}{\text{Parallel Execut
 
 * The sequential program is the baseline because it performs the computation using one CPU execution flow.
 * OpenMP reduces the execution time by sharing the outer-loop iterations among eight CPU threads, achieving a ~7.92× speedup in a shared-memory setup.
-* MPI demonstrates distributed memory execution across 4 nodes (1 master + 3 workers)[cite: 1]. The execution time (107.66s) reflects virtual network message passing overhead (`MPI_Scatter` and `MPI_Bcast`) and VM virtualization bounds compared to direct shared-memory OpenMP[cite: 1].
+* MPI demonstrates distributed memory execution across 4 nodes (1 master + 3 workers). The execution time (107.66s) reflects virtual network message passing overhead (`MPI_Scatter` and `MPI_Bcast`) and VM virtualization bounds compared to direct shared-memory OpenMP.
 * CUDA provides high performance for this workload by launching a large number of logical GPU threads concurrently.
-* The exact same mathematical operation and verification value (`C[0][0] = 4000.00`) are maintained across all implementations[cite: 1].
+* The exact same mathematical operation and verification value (`C[0][0] = 4000.00`) are maintained across all implementations.
 
 ---
 
@@ -178,4 +178,4 @@ $$\text{Speedup} = \frac{\text{Sequential Execution Time}}{\text{Parallel Execut
 
 ## 10. Conclusion
 
-The experiment implements a single matrix multiplication problem using sequential CPU execution, OpenMP shared-memory parallelism, MPI distributed-memory parallelism, and CUDA GPU parallelism. The sequential implementation executed first in WSL2 and established the baseline. OpenMP then reduced execution time through CPU thread-level parallelism, MPI distributed work across four virtual machines[cite: 1], and CUDA delivered high performance on the NVIDIA GPU. The final comparison demonstrates the practical performance differences between the four computing models while keeping the mathematical workload and verification method unchanged[cite: 1].
+The experiment implements a single matrix multiplication problem using sequential CPU execution, OpenMP shared-memory parallelism, MPI distributed-memory parallelism, and CUDA GPU parallelism. The sequential implementation executed first in WSL2 and established the baseline. OpenMP then reduced execution time through CPU thread-level parallelism, MPI distributed work across four virtual machines, and CUDA delivered high performance on the NVIDIA GPU. The final comparison demonstrates the practical performance differences between the four computing models while keeping the mathematical workload and verification method unchanged.
