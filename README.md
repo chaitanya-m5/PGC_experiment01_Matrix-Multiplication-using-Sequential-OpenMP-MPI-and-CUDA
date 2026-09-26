@@ -1,4 +1,4 @@
-# Parallel Computing (PGC Lab) - Experiment 1: $4000 \times 4000$ Matrix Multiplication
+# Parallel Computing (PGC Lab) - Experiment 1: $4000 \times 4000$ Matrix Multiplication Using Sequential,OPENMP,MPI and CUDA
 
 ## 1. Project Overview
 
