@@ -4,9 +4,16 @@ This directory contains the experimental performance results, benchmark charts, 
 
 ---
 
-## 📊 Performance Comparison Chart
+### Performance Comparison Graph-Execution Time
 
-![Matrix Multiplication 4000x4000 Benchmark](./image_2c021f.png)
+![Matrix Multiplication 4000x4000 Benchmark](./screenshots/results/01-execution_time-performance-analysis-results.png)
+
+---
+### Performance Comparison Graph-Speedup
+
+![Matrix Multiplication 4000x4000 Benchmark](./screenshots/results/02-speedup-performance-analysis-results.png)
+
+---
 
 > **Note on Scale:** Due to the drastic performance gap between single-threaded CPU execution (~244s) and CUDA GPU kernel execution (~0.185s), the speedup factor in the benchmark chart above is rendered on a **Logarithmic Scale ($\log_{10}$)**.
 
