@@ -125,7 +125,7 @@ CUDA (Compute Unified Device Architecture) employs Single Instruction, Multiple 
 * **Verification Check:** `C[0][0] = 4000.00`
 
 ### Execution Screenshot
-![CUDA Matrix Multiplication Result](./screenshots/cuda/partD-cuda-result.png)
+![CUDA Matrix Multiplication Result](./screenshots/cuda/03-partD-CUDA-results.png)
 
 ---
 
