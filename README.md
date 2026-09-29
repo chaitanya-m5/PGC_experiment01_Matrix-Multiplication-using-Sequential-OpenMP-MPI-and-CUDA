@@ -156,7 +156,7 @@ $$\text{Speedup} = \frac{\text{Sequential Execution Time}}{\text{Parallel Execut
 ![Matrix Multiplication 4000x4000 Benchmark](./screenshots/results/01-execution_time-performance-analysis-results.png)
 
 ---
-### Performance Comparison Graph-Execution Time
+### Performance Comparison Graph-Speedup
 
 ![Matrix Multiplication 4000x4000 Benchmark](./screenshots/results/02-speedup-performance-analysis-results.png)
 
